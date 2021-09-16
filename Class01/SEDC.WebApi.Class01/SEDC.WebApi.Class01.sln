@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEDC.WebApi.Class01", "SEDC.WebApi.Class01\SEDC.WebApi.Class01.csproj", "{0E4F93AD-BC6A-4B26-8CF7-832FA9AFFE95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E4F93AD-BC6A-4B26-8CF7-832FA9AFFE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4F93AD-BC6A-4B26-8CF7-832FA9AFFE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4F93AD-BC6A-4B26-8CF7-832FA9AFFE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4F93AD-BC6A-4B26-8CF7-832FA9AFFE95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {999FD488-F32E-4B2C-AD66-2F6E57F4C71F}
+	EndGlobalSection
+EndGlobal
