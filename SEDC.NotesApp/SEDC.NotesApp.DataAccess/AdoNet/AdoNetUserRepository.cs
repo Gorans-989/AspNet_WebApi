@@ -29,6 +29,7 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                     command.Parameters.AddWithValue("@Password", entity.Password);
                     command.Parameters.AddWithValue("@FirstName", entity.FirstName);
                     command.Parameters.AddWithValue("@LastName", entity.LastName);
+                   
                     command.ExecuteNonQuery();
                 }
 
@@ -98,6 +99,7 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                         users.Add(user);
                         
                     }
+                    dataReader.Close();
                 }
 
                 using(var command = new SqlCommand())
@@ -156,7 +158,7 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                         user.Password = (string)dataReader["Password"];
                         user.LastName = (string)dataReader["LastName"];
                     };
-                
+                    dataReader.Close();
                 }
                 using (var command = new SqlCommand())
                 {
@@ -176,7 +178,7 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                         };
                         user.Notes.Add(note);
                     }
-                
+                    dataReader.Close();
                 }
             }
             return user;
@@ -184,12 +186,38 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.CommandText = "DELETE FROM [users] WHERE Id = @id";
+                    command.Connection = connection;
+                    command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var cmd = new SqlCommand())
+                {
+                    cmd.Connection = connection;
+                    cmd.CommandText = "UPDATE [Users]" +
+                        "SET UserName = @userName, Password = @pass, FirstName = @firstName, LastName = @lastName" +
+                        " WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@userName", entity.UserName);
+                    cmd.Parameters.AddWithValue("@pass", entity.Password);
+                    cmd.Parameters.AddWithValue("@firstName", entity.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", entity.LastName);
+                    cmd.Parameters.AddWithValue("@id", entity.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

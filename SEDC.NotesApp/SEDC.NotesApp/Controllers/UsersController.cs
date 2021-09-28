@@ -110,7 +110,7 @@ namespace SEDC.NotesApp.Controllers
             try
             {
                 _userService.Delete(id);
-                return StatusCode(StatusCodes.Status200OK);
+                return Ok();
             }
             catch (UserException ex)
             {

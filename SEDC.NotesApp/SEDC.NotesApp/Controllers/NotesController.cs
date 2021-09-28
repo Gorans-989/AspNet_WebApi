@@ -64,7 +64,8 @@ namespace SEDC.NotesApp.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { Message = ex.Message });
             }
         }
 
