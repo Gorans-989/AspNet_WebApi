@@ -6,7 +6,7 @@ namespace SEDC.NotesApp.Services.Helpers
 {
     public class AppSettings
     {
-        public string ConectionString { get; set; }
+        public string ConnectionString { get; set; }
 
     }
 }

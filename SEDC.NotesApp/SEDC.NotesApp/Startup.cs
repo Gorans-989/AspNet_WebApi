@@ -30,7 +30,7 @@ namespace SEDC.NotesApp
             //using app settings
             var appSettings = appConfig.Get<AppSettings>();
 
-            DependencyInjectionModule.RegisterModule(services,appSettings.ConectionString);
+            DependencyInjectionModule.RegisterModule(services,appSettings.ConnectionString);
             
             // register services
             services.AddTransient<INoteService, NoteService>();

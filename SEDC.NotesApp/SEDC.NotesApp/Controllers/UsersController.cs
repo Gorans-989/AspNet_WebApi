@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SEDC.NotesApp.DtoModels;
 using SEDC.NotesApp.Services.Interfaces;
+using SEDC.NotesApp.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,14 +64,17 @@ namespace SEDC.NotesApp.Controllers
                 _userService.Create(newUser);
                 return StatusCode(StatusCodes.Status201Created);
             }
+            catch (BadRequestException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new { Message = ex.Message });
+            }
             catch (Exception ex)
             {
 
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                    new { Message = ex.Message });
             }
-
-
         }
 
         // PUT api/<UsersController>/5
@@ -82,6 +86,15 @@ namespace SEDC.NotesApp.Controllers
                 _userService.Update(user);
                 return StatusCode(StatusCodes.Status200OK);
             }
+            catch (UserException ex) 
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new 
+                    { 
+                        Message = ex.Message,           
+                        UserId = ex.UserId 
+                    });
+            }
             catch (Exception ex)
             {
 
@@ -90,7 +103,6 @@ namespace SEDC.NotesApp.Controllers
             }
 
         }
-
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
@@ -100,13 +112,20 @@ namespace SEDC.NotesApp.Controllers
                 _userService.Delete(id);
                 return StatusCode(StatusCodes.Status200OK);
             }
+            catch (UserException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new
+                    {
+                        Message = ex.Message,
+                        UserId = ex.UserId
+                    });
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                    new { Message = ex.Message });
             }
-
-
         }
     }
 }

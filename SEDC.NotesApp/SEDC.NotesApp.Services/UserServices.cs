@@ -2,6 +2,7 @@
 using SEDC.NotesApp.Models.DbModels;
 using SEDC.NotesApp.Repositories;
 using SEDC.NotesApp.Services.Interfaces;
+using SEDC.NotesApp.Shared.Exceptions;
 using SEDC.NotesApp.Shared.Mappers;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,22 @@ namespace SEDC.NotesApp.Services
         }
         public void Create(UserDto user)
         {
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
+            {
+                throw new BadRequestException("User name or PAssword are required");
+            }
             User newUser = user.ToUser();
             _userRepo.Add(newUser);
         }
 
         public void Delete(int id)
         {
+            User user = _userRepo.GetById(id);
+            if (user == null)
+            {
+
+                throw new UserException(id, "Bad Id, No such user found.");
+            }
             _userRepo.Remove(id);
         }
 
@@ -42,6 +53,12 @@ namespace SEDC.NotesApp.Services
 
         public void Update(UserDto user)
         {
+            User userDb = _userRepo.GetById(user.Id);
+            if (userDb == null)
+            {
+
+                throw new UserException(user.Id, "Bad Id, No user found to update.");
+            }
             _userRepo.Update(user.ToUser());
 
 

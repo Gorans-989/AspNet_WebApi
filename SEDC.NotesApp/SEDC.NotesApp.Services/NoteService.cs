@@ -3,6 +3,7 @@ using SEDC.NotesApp.Models.DbModels;
 using SEDC.NotesApp.Models.DtoModels;
 using SEDC.NotesApp.Repositories;
 using SEDC.NotesApp.Services.Interfaces;
+using SEDC.NotesApp.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,11 @@ namespace SEDC.NotesApp.Services
         }
         public string AddNewNote(NoteDto note)
         {
+            if (string.IsNullOrEmpty(note.Text) || string.IsNullOrEmpty(note.Color))
+            {
+                throw new BadRequestException("text and color are required fields");
+            }
+
             Note noteDb = NoteMapper.MapNoteDtoToNoteModel(note);
             _noteRepo.Add(noteDb);
             return "Note was created succesfully";
@@ -42,7 +48,7 @@ namespace SEDC.NotesApp.Services
             Note note = _noteRepo.GetById(noteId);
             if (note == null)
             {
-                throw new Exception("No such note");
+                throw new NoteException(noteId, 0,"No such note");
             }
             _noteRepo.Remove(noteId);
             return "Note deleted succesfully";
@@ -53,7 +59,7 @@ namespace SEDC.NotesApp.Services
             Note noteDb = _noteRepo.GetById(note.Id);
             if (noteDb == null)
             {
-                throw new Exception("No such note");
+                throw new NoteException(note.Id,note.UserId,"No such note");
             }
             Note mappedNote = NoteMapper.MapNoteDtoToNoteModel(note);
             _noteRepo.Update(mappedNote);
