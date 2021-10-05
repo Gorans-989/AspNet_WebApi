@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SEDC.NotesApp.DataAccess.AdoNet;
 using SEDC.NotesApp.DataAccess.Dapper;
 using SEDC.NotesApp.Models;
 using SEDC.NotesApp.Models.DbModels;
@@ -21,15 +22,15 @@ namespace SEDC.NotesApp.Services.Helpers
             // Using entity framework
             // services.AddTransient<IRepository<User>, UserRepository>();
 
-            // using ado net
-            //services.AddTransient<IRepository<User>>(
-            //    x => new AdoNetUserRepository(connectionString)
-            //    );
+            //using ado net
+            services.AddTransient<IRepository<User>>(
+                x => new AdoNetUserRepository(connectionString)
+                );
 
             //using dapper
-            services.AddTransient<IRepository<User>>(
-                x => new DapperUserRepository(connectionString)
-                );
+            //services.AddTransient<IRepository<User>>(
+            //    x => new DapperUserRepository(connectionString)
+            //    );
 
             return services;
         }

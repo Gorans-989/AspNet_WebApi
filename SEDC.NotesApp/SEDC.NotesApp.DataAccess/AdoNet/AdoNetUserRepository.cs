@@ -2,6 +2,7 @@
 using SEDC.NotesApp.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -23,7 +24,7 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                 using (SqlCommand command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = $"INSERT INTO [Users] (UserName, Password, FirstName, LastName,)" +
+                    command.CommandText = $"INSERT INTO [Users] (UserName, Password, FirstName, LastName)" +
                         $"VALUES(@UserName, @Password,@FirstName, @LastName)";
                     command.Parameters.AddWithValue("@UserName", entity.UserName);
                     command.Parameters.AddWithValue("@Password", entity.Password);
@@ -46,8 +47,6 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
 //                      }
 //                  }
             }
-
-
         }
 
         public List<User> GetAll()
@@ -145,8 +144,11 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                 using (SqlCommand command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT * FROM [Users] WHERE Id = userId";
-                    command.Parameters.AddWithValue("UserId", id);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.CommandText = "dbo.spUsers_GetById";
+                    command.Parameters.AddWithValue("@id", id);
                     
                     SqlDataReader dataReader = command.ExecuteReader();
                     
@@ -163,8 +165,12 @@ namespace SEDC.NotesApp.DataAccess.AdoNet
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT * FROM [Notes] WHERE UserId = @UserId";
-                    command.Parameters.AddWithValue("@UserId", user.Id);
+                    //command.CommandText = "SELECT * FROM [Notes] WHERE UserId = @UserId";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "dbo.spNotes_GetByUserId";
+                    //command.Parameters.AddWithValue("@UserId", user.Id);
+
+                    command.Parameters.AddWithValue("@userId", user.Id);
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
